@@ -1,10 +1,8 @@
 #include <ncurses.h>
 #include <iostream>
 
-time_t startGT;
-time_t overGT;
-
 using std::fstream; using std::ifstream; using std::ofstream;
+int map[30][60];
 
 int main()
 {
@@ -23,7 +21,6 @@ int main()
 	int coin =0;
   mvprintw(y/2-3,x/2-25,"insert coin to play game.");
 	mvprintw(y/2-2,x/2-25,"press button to insert a coin."); refresh();   //default window 테두리 *
-
 	getch();
 
 	WINDOW *win = newwin(y+2, x-38, 0, 0); //height, width, startY, startX
@@ -33,9 +30,24 @@ int main()
 	keypad(win, TRUE);
 	wrefresh(win);
 
+	////////////////////////
+	WINDOW *score = newwin(y/2, x-60, 0,x-37);
+	wbkgd(score, COLOR_PAIR(1));
+    wattron(score, COLOR_PAIR(1));
+	wborder(score, '|','|','-','-','+','+','+','+');
+	wrefresh(score);
+	nodelay(score, TRUE);
+
+	WINDOW *mission = newwin(y/2, x-60, y/2,x-37);
+	wbkgd(mission, COLOR_PAIR(1));
+    wattron(mission, COLOR_PAIR(1));
+	wborder(mission, '|','|','-','-','+','+','+','+');
+	wrefresh(mission);
+	nodelay(mission, TRUE);
+/////////////////////////////////
 	getch();
 	delwin(win);
 	endwin();
 	return 0;
-	
+
 }
