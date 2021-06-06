@@ -36,6 +36,7 @@ class Vector
 	private:
 		int x,y;
 };
+
 class Snake
 {
 	private:
@@ -50,7 +51,7 @@ class Snake
 		Snake(int _height, int _width)
 		: height(_height), width(_width)
   {   init(map);
-		checkWall(map);
+		check_wall(map);
 			table = new char[height*width];
 		}
 		~Snake()
@@ -63,7 +64,7 @@ class Snake
             }
         }
     }
-	 void checkWall(int map[30][60]) //벽 위치 벡터배열로 생성
+	 void check_wall(int map[30][60]) //벽 위치 벡터배열로 생성
 		{
 
             countW =0;
@@ -74,7 +75,7 @@ class Snake
                 }
             }
 		}
-		char* checkMap(){ // 맵바꾸기
+		char* changeMap(){ // 맵바꾸기
 				return getTable(map1);
 		}
 		int getHeight() {return height;}
@@ -94,57 +95,52 @@ class Snake
 			return table;
 		}
 };
-void draw(WINDOW* game, Snake& snake, char* table, int height, int width){
-werase(game);
-wbkgd(game, COLOR_PAIR(1));
+void create(WINDOW* game, Snake& snake, char* table, int height, int width){
+	werase(game);
+	wbkgd(game, COLOR_PAIR(1));
 	wattron(game, COLOR_PAIR(1));
-wborder(game, '|','|','-','-','+','+','+','+');
+	wborder(game, '|','|','-','-','+','+','+','+');
 
 
-
-for(int i=0; i<(height*width); ++i)
-{
-	if(table[i]!=' ')
+	for(int i=0; i<(height*width); ++i)
 	{
-
-		int y = i/width;
-		int x = i-(y*width);
-
-		int d;
-		switch(table[i])
+		if(table[i]!=' ')
 		{
-			case 'a':
-				mvwprintw(game, 1+y,1+x, "*");
-				break;
-			case 'x':
-				mvwprintw(game, 1+y,1+x, "X");
-				break;
-			case 'h':
-				mvwprintw(game, 1+y,1+x, "O");
-				break;
-			case 'b':
-				mvwprintw(game, 1+y,1+x, "o");
-				break;
 
-			case '1':
-				mvwprintw(game, 1+y,1+x, "-"); //"█"
-				break;
+			int y = i/width;
+			int x = i-(y*width);
+			int d;
+			switch(table[i])
+			{
+				case 'a':
+					mvwprintw(game, 1+y,1+x, "*");
+					break;
+				case 'x':
+					mvwprintw(game, 1+y,1+x, "X");
+					break;
+				case 'h':
+					mvwprintw(game, 1+y,1+x, "O");
+					break;
+				case 'b':
+					mvwprintw(game, 1+y,1+x, "o");
+					break;
 
-			case '2':
-				mvwprintw(game, 1+y,1+x, "+"); //"█"
-				break;
-			case '3':
-				mvwprintw(game, 1+y,1+x, " " );
-				break;
-			case 'G':
-				mvwprintw(game, 1+y,1+x, " ");
-				break;
+				case '1': //map
+					mvwprintw(game, 1+y,1+x, "-"); //"█"
+					break;
+				case '2':
+					mvwprintw(game, 1+y,1+x, "+"); //"█"
+					break;
+				case '3':
+					mvwprintw(game, 1+y,1+x, " " );
+					break;
+				case 'G':
+					mvwprintw(game, 1+y,1+x, " ");
+					break;
+				}
 		}
-
 	}
-
-}
-wrefresh(game);
+	wrefresh(game);
 }
 
 int main()
@@ -168,27 +164,28 @@ int main()
 
 	WINDOW *game = newwin(y+2, x-38, 0, 0); //height, width, startY, startX
 	wbkgd(game, COLOR_PAIR(1));
-  wattron(game, COLOR_PAIR(1));
+  	wattron(game, COLOR_PAIR(1));
 	wborder(game, '|','|','-','-','+','+','+','+');
 	keypad(game, TRUE);
 	wrefresh(game);
 
 	WINDOW *score = newwin(y/2 + 1, x-60, 0,x-37);
 	wbkgd(score, COLOR_PAIR(1));
-    wattron(score, COLOR_PAIR(1));
+  	wattron(score, COLOR_PAIR(1));
 	wborder(score, '|','|','-','-','+','+','+','+');
 	wrefresh(score);
 	nodelay(score, TRUE);
 
 	WINDOW *mission = newwin(y/2 + 1, x-60, y/2 + 1,x-37);
 	wbkgd(mission, COLOR_PAIR(1));
-    wattron(mission, COLOR_PAIR(1));
+  	wattron(mission, COLOR_PAIR(1));
 	wborder(mission, '|','|','-','-','+','+','+','+');
 	wrefresh(mission);
 	nodelay(mission, TRUE);
+
 	Snake snake(y, x-40);
-	char *tbl = snake.checkMap();
-	draw(game, snake, tbl, snake.getHeight(), snake.getWidth());
+	char *tbl = snake.changeMap();
+	create(game, snake, tbl, snake.getHeight(), snake.getWidth());
 	getch();
 	delwin(game);
 	endwin();
