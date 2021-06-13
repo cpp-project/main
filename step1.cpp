@@ -112,19 +112,6 @@ void create(WINDOW* game, Snake& snake, char* table, int height, int width){
 			int d;
 			switch(table[i])
 			{
-				case 'a':
-					mvwprintw(game, 1+y,1+x, "*");
-					break;
-				case 'x':
-					mvwprintw(game, 1+y,1+x, "X");
-					break;
-				case 'h':
-					mvwprintw(game, 1+y,1+x, "O");
-					break;
-				case 'b':
-					mvwprintw(game, 1+y,1+x, "o");
-					break;
-
 				case '1': //map
 					mvwprintw(game, 1+y,1+x, "-"); //"█"
 					break;
@@ -134,10 +121,6 @@ void create(WINDOW* game, Snake& snake, char* table, int height, int width){
 				case '3':
 					mvwprintw(game, 1+y,1+x, " " );
 					break;
-				case 'G':
-					mvwprintw(game, 1+y,1+x, " ");
-					break;
-				}
 		}
 	}
 	wrefresh(game);
