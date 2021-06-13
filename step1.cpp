@@ -75,12 +75,12 @@ class Snake
                 }
             }
 		}
-		char* changeMap(){ // 맵바꾸기
-				return getTable(map1);
-		}
-		int getHeight() {return height;}
-		int getWidth() {return width;}
-		char* getTable(int map[30][60])
+		char* check_map(){ // 맵바꾸기
+			return get_table(map1);
+    }
+		int get_height() {return height;}
+		int get_width() {return width;}
+		char* get_table(int map[30][60])
 		{
 		  memset(table, ' ', height*width);
             for(unsigned int i=0; i<30; i++)
@@ -95,6 +95,7 @@ class Snake
 			return table;
 		}
 };
+
 void create(WINDOW* game, Snake& snake, char* table, int height, int width){
 	werase(game);
 	wbkgd(game, COLOR_PAIR(1));
@@ -102,8 +103,7 @@ void create(WINDOW* game, Snake& snake, char* table, int height, int width){
 	wborder(game, '|','|','-','-','+','+','+','+');
 
 
-	for(int i=0; i<(height*width); ++i)
-	{
+	for(int i=0; i<(height*width); ++i){
 		if(table[i]!=' ')
 		{
 
@@ -113,23 +113,23 @@ void create(WINDOW* game, Snake& snake, char* table, int height, int width){
 			switch(table[i])
 			{
 				case '1': //map
-					mvwprintw(game, 1+y,1+x, "-"); //"█"
+					mvwprintw(game, 1+y,1+x, "-");
 					break;
 				case '2':
-					mvwprintw(game, 1+y,1+x, "+"); //"█"
+					mvwprintw(game, 1+y,1+x, "+");
 					break;
 				case '3':
 					mvwprintw(game, 1+y,1+x, " " );
 					break;
+			}
 		}
-	}
 	wrefresh(game);
+	}
 }
 
-int main()
-{
+int main(){
 	setlocale(LC_ALL, "ko_KR.utf8");
-	setlocale(LC_CTYPE, "ko_KR.utf8");//한글 출력 설정
+	setlocale(LC_CTYPE, "ko_KR.utf8"); //한글 출력 설정
 
 	int sz;
 	int x,y;
@@ -139,36 +139,38 @@ int main()
 	noecho();
 
   start_color();
-  init_pair(1, COLOR_GREEN, COLOR_BLACK);
+  init_pair(1, COLOR_CYAN, COLOR_BLACK);
 	int coin =0;
-  mvprintw(y/2-3,x/2-25,"insert coin to play game.");
-	mvprintw(y/2-2,x/2-25,"press button to insert a coin."); refresh();   //default window 테두리 *
+	mvprintw(y/2-3,x/2-15,"스네이크 게임을 시작합니다!");
+	mvprintw(y/2-2,x/2-15,"enter키를 눌러주세요"); refresh();
 	getch();
 
 	WINDOW *game = newwin(y+2, x-38, 0, 0); //height, width, startY, startX
 	wbkgd(game, COLOR_PAIR(1));
-  	wattron(game, COLOR_PAIR(1));
+  wattron(game, COLOR_PAIR(1));
 	wborder(game, '|','|','-','-','+','+','+','+');
 	keypad(game, TRUE);
 	wrefresh(game);
 
 	WINDOW *score = newwin(y/2 + 1, x-60, 0,x-37);
 	wbkgd(score, COLOR_PAIR(1));
-  	wattron(score, COLOR_PAIR(1));
+  wattron(score, COLOR_PAIR(1));
 	wborder(score, '|','|','-','-','+','+','+','+');
 	wrefresh(score);
 	nodelay(score, TRUE);
 
 	WINDOW *mission = newwin(y/2 + 1, x-60, y/2 + 1,x-37);
 	wbkgd(mission, COLOR_PAIR(1));
-  	wattron(mission, COLOR_PAIR(1));
+  wattron(mission, COLOR_PAIR(1));
 	wborder(mission, '|','|','-','-','+','+','+','+');
 	wrefresh(mission);
 	nodelay(mission, TRUE);
 
 	Snake snake(y, x-40);
-	char *tbl = snake.changeMap();
-	create(game, snake, tbl, snake.getHeight(), snake.getWidth());
+	char *tbl = snake.check_map();
+	getch();
+	create(game, snake, tbl, snake.get_height(), snake.get_width());
+	wrefresh(game);
 	getch();
 	delwin(game);
 	endwin();
