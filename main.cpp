@@ -26,7 +26,6 @@ int mission_2;
 int mission_3;
 int mission_4;
 
-//변수명 바꿀지 정해야함 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
 time_t nowGameT;
 time_t startAT;
 time_t nowAT;
@@ -215,10 +214,6 @@ class Snake
             increaseBodySize(i);
       }
 
-      /*아이템을 먹을때마다 startT 갱신해줌.
-      메인 while문에서 계속 checkForGrowth을 호출해주며
-      nowT를 갱신해줌. 만약 nowT - startT가 5초 이상이
-      될 경우 dropGrowth함수를 재호출해서 새로 아이템 생성*/
       void checkForGrowth(){
 
          nowAT = time(NULL);
@@ -516,11 +511,11 @@ bool writeEndAndGetInput()
 	box(endwin, 0, 0);
 	nodelay(endwin, TRUE);
 	keypad(endwin, TRUE);
-	mvwprintw(endwin, 14, 40, "GAME OVER");
-	mvwprintw(endwin, 15, 40, "Game Score : %d", score);
-	mvwprintw(endwin, 16, 40, "Play Time : %d second", overgameT - startgameT);
-	mvwprintw(endwin, 17, 40, "Total Score : %d", score + 1000 - (overgameT - startgameT));
-	mvwprintw(endwin, 18, 40, "Press [q] to quit.");
+	mvwprintw(endwin, 14, 40, "~게임 오버~");
+	mvwprintw(endwin, 15, 40, "게임 점수 : %d", score);
+	mvwprintw(endwin, 16, 40, "게임시간 : %d 초", overgameT - startgameT);
+	mvwprintw(endwin, 17, 40, "총 점수 : %d", score + 1000 - (overgameT - startgameT));
+	mvwprintw(endwin, 18, 40, "[q]");
 	int c;
 	do{
 		c = wgetch(endwin);
@@ -672,14 +667,10 @@ int main(){
 			snake.mission();
 			snake.game_end(); //몸 길이 3 미만일때 죽음
 
-
-
-			//-----[ SLEEP ]-------
 			#ifdef WIN32
 			#else
 			usleep(snake.get_speed());
 			#endif
-			//---------------------
 		}
 
 	}while(writeEndAndGetInput());
@@ -689,101 +680,3 @@ int main(){
 	delwin(mission);
 	endwin();
 }
-/*
-int main()
-{
-	setlocale(LC_ALL, " ");
-	setlocale(LC_CTYPE, "ko_KR.utf8");//한글 출력 설정
-	count_growth = 0;
-	count_poison = 0;
-	count_gate = 0;
-	com_1 = ' ';
-	com_2 = ' ';
-	com_3 = ' ';
-	com_4 = ' ';
-	int sz;
-	int x,y;
-	x = 100;
-	y = 30;
-	initscr();
-	noecho();
-	cbreak();
-	resize_term(1000, 500);
-  start_color();
-  init_pair(1, COLOR_CYAN, COLOR_BLACK);
-	int coin =0;
-  mvprintw(y/2-3,x/2-15,"스네이크 게임을 시작합니다^^");
-	mvprintw(y/2-2,x/2-15,"enter키를 눌러주세요"); refresh();   //default window 테두리 *
-	getch();
-	endwin();
-	WINDOW *game = newwin(y+2, x-38, 0, 0); //height, width, startY, startX
-	wbkgd(game, COLOR_PAIR(1));
-  wattron(game, COLOR_PAIR(1));
-	wborder(game, '|','|','-','-','+','+','+','+');
-	keypad(game, TRUE);
-	wrefresh(game);
-
-	WINDOW *score = newwin(y/2 + 1, x-60, 0,x-37);
-	wbkgd(score, COLOR_PAIR(1));
-  wattron(score, COLOR_PAIR(1));
-	wborder(score, '|','|','-','-','+','+','+','+');
-	wrefresh(score);
-	nodelay(score, TRUE);
-
-	WINDOW *mission = newwin(y/2 + 1, x-60, y/2 + 1,x-37);
-	wbkgd(mission, COLOR_PAIR(1));
-  wattron(mission, COLOR_PAIR(1));
-	wborder(mission, '|','|','-','-','+','+','+','+');
-	wrefresh(mission);
-	nodelay(mission, TRUE);
-	//Snake snake(y, x-40);
-
-  do
-	{
-		startgameT = time(NULL);
-		Snake snake(y, x-40);
-		refresh();
-		wrefresh(game);
-		sz = snake.getBodySize();
-		printScore(score, 0, 1,sz);
-		printMission(mission,0,1);
-		count_growth = 0;
-		count_poison = 0;
-		count_gate = 0;
-
-		while(!snake.get_exit())
-		{
-			char *tbl = snake.check_map();
-			create(game, snake, tbl, snake.get_height(), snake.get_width());
-			printScore(score, snake.get_points(), snake.get_level(), snake.getBodySize());
-			printMission(mission, snake.get_points(), snake.get_level());
-			int input = wgetch(game);
-			proccesInput(game, snake, input);
-			if(snake.get_exit())break;
-			snake.checkPoints();
-			snake.body_move();
-			snake.make_move();
-			snake.checkForGrowth();
-			snake.checkForPoison();
-			snake.checkForwall();
-			snake.check_gate();
-			snake.change_gate();
-			snake.mission();
-			snake.game_end(); //몸 길이 3 미만일때 죽음
-
-			#ifdef WIN32
-			#else
-			usleep(snake.get_speed());
-			#endif
-		}
-
-	}while(writeEndAndGetInput()); //writeEndAndGetInput()
-
-	getch();
-	delwin(score);
-	delwin(game);
-	delwin(mission);
-	endwin();
-  return 0;
-}
-*/
