@@ -515,7 +515,7 @@ bool writeEndAndGetInput()
 	mvwprintw(endwin, 15, 40, "게임 점수 : %d", score);
 	mvwprintw(endwin, 16, 40, "게임시간 : %d 초", overgameT - startgameT);
 	mvwprintw(endwin, 17, 40, "총 점수 : %d", score + 1000 - (overgameT - startgameT));
-	mvwprintw(endwin, 18, 40, "[q]");
+	mvwprintw(endwin, 18, 40, "[q]를 누르면 종료됩니다~!");
 	int c;
 	do{
 		c = wgetch(endwin);
